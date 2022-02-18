@@ -188,7 +188,7 @@ def on_message(client, userdata, message):
                 data["is_parked"]=1
                 data["is_charging"]=0
                 data["is_dcfc"]=0
-        elif topic_postfix == "battery_level":
+        elif topic_postfix == "usable_battery_level": #State of Charge of the vehicle (what's displayed on the dashboard of the vehicle is preferred)
             data["soc"] = payload
         elif topic_postfix == "charge_energy_added":
             data["kwh_charged"] = payload
