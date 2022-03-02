@@ -30,6 +30,7 @@ import calendar
 import os
 import paho.mqtt.client as mqtt
 import requests
+from time import sleep
 from docopt import docopt
 
 # Needed to intitialize docopt (for CLI)
