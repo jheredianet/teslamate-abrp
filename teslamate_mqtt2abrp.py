@@ -49,16 +49,20 @@ if arguments['-a'] is True and arguments['MQTT_PASSWORD'] is not None:
     MQTTPASSWORD = arguments['MQTT_PASSWORD']
 elif 'MQTT_PASSWORD' in os.environ: MQTTPASSWORD = os.environ['MQTT_PASSWORD']
 
-if arguments['MQTT_SERVER'] is None: MQTTSERVER = os.environ['MQTT_SERVER']
-elif 'MQTT_SERVER' in os.environ: MQTTSERVER = arguments['MQTT_SERVER']
-else: print("You need to supply a MQTT server address.")
+if arguments['MQTT_SERVER'] is not None: MQTTSERVER = arguments['MQTT_SERVER']
+elif 'MQTT_SERVER' in os.environ: MQTTSERVER = os.environ['MQTT_SERVER']
+else: 
+    print("You need to supply a MQTT server address.")
+    sys.exit("MQTT server address not supplied.")
 
-if arguments['USER_TOKEN'] is None: USERTOKEN = os.environ['USER_TOKEN']
-elif 'USER_TOKEN' in os.environ: USERTOKEN = arguments['USER_TOKEN']
-else: print("You need to supply a user token for ABRP.")
+if arguments['USER_TOKEN'] is not None: USERTOKEN = arguments['USER_TOKEN']
+elif 'USER_TOKEN' in os.environ: USERTOKEN = os.environ['USER_TOKEN']
+else: 
+    print("You need to supply a user token for ABRP.")
+    sys.exit("User token not supplied.")
 
-if arguments['CAR_NUMBER'] is None: CARNUMBER = os.environ['CAR_NUMBER']
-elif 'CAR_NUMBER' in os.environ: CARNUMBER = arguments['CAR_NUMBER']
+if arguments['CAR_NUMBER'] is not None: CARNUMBER = arguments['CAR_NUMBER']
+elif 'CAR_NUMBER' in os.environ: CARNUMBER = os.environ['CAR_NUMBER']
 else:
     CARNUMBER = 1
     print("Car number not supplied, defaulting to 1.")
