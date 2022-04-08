@@ -41,16 +41,14 @@ APIKEY = "d49234a5-2553-454e-8321-3fe30b49aa64"
 MQTTUSERNAME = None
 MQTTPASSWORD = None
 
-if arguments['-l'] is True:
-    if arguments['MQTT_USERNAME'] is None: MQTTUSERNAME = os.environ['MQTT_USERNAME']
-    else: MQTTUSERNAME = arguments['MQTT_USERNAME']
+if (arguments['-l'] is True or arguments['-a'] is True) and arguments['MQTT_USERNAME'] is not None: 
+    MQTTUSERNAME = arguments['MQTT_USERNAME']
+else: MQTTUSERNAME = os.environ['MQTT_USERNAME']
 
-if arguments['-a'] is True:
-    if arguments['MQTT_USERNAME'] is None: MQTTUSERNAME = os.environ['MQTT_USERNAME']
-    if arguments['MQTT_PASSWORD'] is None: MQTTPASSWORD = os.environ['MQTT_PASSWORD']
-    else: 
-        MQTTUSERNAME = arguments['MQTT_USERNAME']
-        MQTTPASSWORD = arguments['MQTT_PASSWORD']
+if arguments['-a'] is True and arguments['MQTT_PASSWORD'] is not None:
+    MQTTPASSWORD = arguments['MQTT_PASSWORD']
+else: 
+    MQTTPASSWORD = os.environ['MQTT_PASSWORD']
 
 if arguments['MQTT_SERVER'] is None: MQTTSERVER = os.environ['MQTT_SERVER']
 else: MQTTSERVER = arguments['MQTT_SERVER']
