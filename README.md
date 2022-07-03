@@ -22,6 +22,8 @@ ABRP:
   container_name: TeslaMate_ABRP
   image: fetzu/teslamate-abrp:latest
   restart: always
+  # privileged: true
+  # NOTE: un-comment the previous line to run the container in privilege mode (necessary on RaspberryPi)
   environment:
     - MQTT_SERVER=mosquitto
     - USER_TOKEN=y0ur-4p1-k3y
