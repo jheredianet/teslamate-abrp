@@ -55,7 +55,7 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.tags }},
             fetzu/teslamate-abrp:latest,
-            ghcr.io/${{ github.repository }}/fetzu/teslamate-abrp:latest
+            ghcr.io/${{ github.repository }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           
       - name: Build and push Docker image with 'beta' tag
@@ -66,5 +66,5 @@ jobs:
           push: true
           tags: |
             fetzu/teslamate-abrp:beta,
-            ghcr.io/${{ github.repository }}/fetzu/teslamate-abrp:beta
+            ghcr.io/${{ github.repository }}:beta
           labels: ${{ steps.meta.outputs.labels }}
