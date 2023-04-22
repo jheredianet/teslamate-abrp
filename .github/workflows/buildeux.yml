@@ -46,10 +46,19 @@ jobs:
             fetzu/teslamate-abrp
             ghcr.io/${{ github.repository }}
       
-      - name: Build and push Docker images
+      - name: Build and push Docker images for releases
+        if: github.event_name == 'release'
         uses: docker/build-push-action@v4
         with:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          
+      - name: Build and push Docker image with 'latest' tag
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v4
+        with:
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          push: true
+          tags: latest
