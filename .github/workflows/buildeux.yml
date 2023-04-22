@@ -54,7 +54,7 @@ jobs:
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }},
-            ${{ steps.meta.outputs.tags | map: prepend('latest') | join(',')}}
+            fetzu/teslamate-abrp:latest
           labels: ${{ steps.meta.outputs.labels }}
           
       - name: Build and push Docker image with 'beta' tag
