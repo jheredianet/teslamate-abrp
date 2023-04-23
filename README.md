@@ -1,5 +1,6 @@
 # TeslaMate: MQTT to ABRP
 [![amd64+arm64 build](https://github.com/fetzu/teslamate-abrp/actions/workflows/build.yml/badge.svg)](https://github.com/fetzu/teslamate-abrp/actions/workflows/build.yml)
+[![](https://img.shields.io/github/v/release/fetzu/teslamate-abrp)](https://github.com/fetzu/teslamate-abrp/releases/latest)
 [![](https://img.shields.io/docker/image-size/fetzu/teslamate-abrp/latest)](https://hub.docker.com/r/fetzu/teslamate-abrp)
 [![](https://img.shields.io/docker/pulls/fetzu/teslamate-abrp?color=%23099cec)](https://hub.docker.com/r/fetzu/teslamate-abrp)
 [![GitHub license](https://img.shields.io/github/license/fetzu/teslamate-abrp)](https://github.com/fetzu/teslamate-abrp/blob/main/LICENSE)
