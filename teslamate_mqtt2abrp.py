@@ -148,13 +148,13 @@ def on_message(client, userdata, message):
             data["speed"] = int(payload)
         elif topic_postfix == "power":
             data["power"] = float(payload)
-            if(data["is_charging"]==True and int(payload)<-11):
-                data["is_dcfc"]=True
+            if(data["is_charging"] == True and int(payload)<-11):
+                data["is_dcfc"] = True
         elif topic_postfix == "charger_power":
             if(payload!='' and int(payload)!=0):
-                data["is_charging"]=True
+                data["is_charging"] = True
                 if int(payload)>11:
-                    data["is_dcfc"]=True
+                    data["is_dcfc"] = True
         elif topic_postfix == "heading":
             data["heading"] = int(payload)
         elif topic_postfix == "outside_temp":
@@ -179,27 +179,27 @@ def on_message(client, userdata, message):
                 del data["voltage"]
         elif topic_postfix == "shift_state":
             if payload == "P":
-                data["is_parked"]=True
+                data["is_parked"] = True
             elif(payload == "D" or payload == "R"):
-                data["is_parked"]=False
+                data["is_parked"] = False
         elif topic_postfix == "state":
             state = payload
-            if payload=="driving":
-                data["is_parked"]=False
-                data["is_charging"]=False
-                data["is_dcfc"]=False
-            elif payload=="charging":
-                data["is_parked"]=True
-                data["is_charging"]=True
-                data["is_dcfc"]=False
-            elif payload=="supercharging":
-                data["is_parked"]=True
-                data["is_charging"]=True
-                data["is_dcfc"]=True
-            elif(payload=="online" or payload=="suspended" or payload=="asleep"):
-                data["is_parked"]=True
-                data["is_charging"]=False
-                data["is_dcfc"]=False
+            if payload == "driving":
+                data["is_parked"] = False
+                data["is_charging"] = False
+                data["is_dcfc"] = False
+            elif payload == "charging":
+                data["is_parked"] = True
+                data["is_charging"] = True
+                data["is_dcfc"] = False
+            elif payload == "supercharging":
+                data["is_parked"] = True
+                data["is_charging"] = True
+                data["is_dcfc"] = True
+            elif(payload == "online" or payload == "suspended" or payload == "asleep"):
+                data["is_parked"] = True
+                data["is_charging"] = False
+                data["is_dcfc"] = False
         elif topic_postfix == "usable_battery_level": #State of Charge of the vehicle (what's displayed on the dashboard of the vehicle is preferred)
             data["soc"] = int(payload)
         elif topic_postfix == "charge_energy_added":
@@ -215,7 +215,7 @@ def on_message(client, userdata, message):
             #print("Unneeded topic:", message.topic, payload)
 
         # Calculate acurrate power on AC charging
-        if data["power"] != 0.0 and data["is_charging"] == True and "voltage" in data and "current" in data:
+        if data["is_charging"] == True and data["is_dcfc"] == False and "voltage" in data and "current" in data:
             data["power"] = float(data["current"] * data["voltage"] * charger_phases) / 1000.0 * -1
 
         return
@@ -278,13 +278,16 @@ def updateABRP():
     global data
     global APIKEY
     global USERTOKEN
+
     try:
         headers = {"Authorization": "APIKEY "+APIKEY}
         body = {"tlm": data}
         response = requests.post("https://api.iternio.com/1/tlm/send?token="+USERTOKEN, headers=headers, json=body)
         resp = response.json()
         if resp["status"] != "ok":
-            print("Response from ABRP:", response.text)
+            print("Error, response from the ABRP API:", response.text)
+        else:
+            print("Data object successfully sent:", data)
     except Exception as ex:
         print("Unexpected exception while calling ABRP API:", sys.exc_info()[0])
         print(ex)
@@ -301,26 +304,23 @@ while True:
     current_datetime = datetime.datetime.now(datetime.UTC)
     current_timetuple = current_datetime.timetuple()
     data["utc"] = calendar.timegm(current_timetuple) #utc timestamp must be in every message
-    
     str_now = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
     msg = str_now + ": Car is " + state
-    msgDetails = "Data object sent:"
     if(state == "parked" or state == "online" or state == "suspended" or state=="asleep" or state=="offline"): #if parked, update every 30 cylces/seconds
+        if data["power"] != 0: #sometimes after charging the last power value is kept and not refreshed until the next drive or charge session. 
+            data["power"] = 0.0
         if "kwh_charged" in data:
             del data["kwh_charged"]
         if(i%30==0 or i>30):
             print(msg + ", updating every 30s.")
-            print(msgDetails, data)
             updateABRP()
             i = 0
     elif state == "charging": #if charging, update every 6 cycles/seconds
         if i%6==0:
             print(msg +", updating every 6s.")
-            print(msgDetails, data)
             updateABRP()
     elif state == "driving": #if driving, update every cycle/second
         print(msg + ", updating every second.")
-        print(msgDetails, data)
         updateABRP()
     else:
         print(msg + " (unknown state), not sending any update to ABRP.")
