@@ -309,9 +309,9 @@ i = -1
 while True:
     i+=1
     sleep(1) #refresh rate of 1 cycle per second
-    logging.debug(state)
     if state != prev_state:
         i = 30
+        logging.debug("Current car state changed to: {}.".format(state))
     current_datetime = datetime.datetime.now(datetime.UTC)
     current_timetuple = current_datetime.timetuple()
     data["utc"] = calendar.timegm(current_timetuple) #utc timestamp must be in every message
