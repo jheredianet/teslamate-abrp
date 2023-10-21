@@ -315,6 +315,8 @@ while True:
     if(state == "parked" or state == "online" or state == "suspended" or state=="asleep" or state=="offline"): #if parked, update every 30 cylces/seconds
         if data["power"] != 0: #sometimes after charging the last power value is kept and not refreshed until the next drive or charge session. 
             data["power"] = 0.0
+        if data["speed"] > 0: #sometimes after driving the last speed value is kept and not refreshed until the next drive or charge session. 
+            data["speed"] = 0
         if "kwh_charged" in data:
             del data["kwh_charged"]
         if(i%30==0 or i>30):
