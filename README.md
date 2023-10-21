@@ -37,7 +37,7 @@ Make sure to adapt the following environment variables:
 - The second values (USER_TOKEN) correspond to the value provided by ABRP.
 - The third value corresponds to your car number (1 if you only have a single car).
 - The last value corresponds to your car model. When this value is not set, the script will try to determine your car model automatically (this should work for Models S, X, 3 and Y with standard configs). __The detection is very bare-bones and will not take into account factors such as wheel type, heat pump, LFP battery. It is recommended you take a moment to find your car model on https://api.iternio.com/1/tlm/get_carmodels_list and use the corresponding key as a value for CAR_MODEL (e.g. "tesla:m3:20:bt37:heatpump" for a 2021 Model 3 LR).__
-- Additionally, MQTT_PASSWORD and/or MQTT_USERNAME can be set to use authentication on the MQTT server. Setting the environement variable TM2ABRP_DEBUG sets logging level to DEBUG.
+- Additionally, MQTT_PASSWORD and/or MQTT_USERNAME can be set to use authentication on the MQTT server. Setting the environement variable TM2ABRP_DEBUG (to any value) sets logging level to DEBUG and give you a more verbose logging.
   
 Then from the command line, navigate to the folder where your docker-compose.yml is located and run:
 ```
@@ -45,7 +45,7 @@ docker-compose pull ABRP
 docker-compose up -d ABRP
 ```
   
-If all goes well, your car should be shown as online in ABRP after a minute. The logs should  show "Connected with result code 0".
+If all goes well, your car should be shown as online in ABRP after a minute. Logging should show "YYYY-MM-DD HH:MM:SS: [INFO] Connected with result code 0. Connection with MQTT server established.".
 
 ### 2. Use as python script
 The script can also be run directly on a machine with Python 3.x. Please note that the machine needs to have access to your MQTT server on port 1883.
