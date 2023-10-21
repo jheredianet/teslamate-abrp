@@ -216,8 +216,7 @@ def on_message(client, userdata, message):
         elif topic_postfix == "charge_energy_added":
             data["kwh_charged"] = float(payload)
         elif topic_postfix == "charger_phases":
-            payload = payload.decode('utf-8') #Fixes processing error when transitioning out of charging
-            charger_phases = 3 if int(payload) > 1 else 1
+            charger_phases = 3 if payload and int(payload) > 1 else 1 #Fixes processing error when transitioning out of charging
         elif topic_postfix == "inside_temp":
             a=0 #Volontarely ignored
         elif topic_postfix == "since":
