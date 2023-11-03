@@ -1,0 +1,34 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "18:00"
+    commit-message:
+      prefix: "chore: "
+    reviewers:
+      - "fetzu"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "sunday"
+      time: "18:00"
+    commit-message:
+      prefix: "chore: "
+    reviewers:
+      - "fetzu"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "sunday"
+      time: "18:00"
+    commit-message:
+      prefix: "build: "
+    reviewers:
+      - "fetzu"
