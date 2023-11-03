@@ -6,6 +6,10 @@ updates:
       interval: "weekly"
       day: "sunday"
       time: "18:00"
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
     commit-message:
       prefix: "chore: "
     reviewers:
@@ -17,6 +21,10 @@ updates:
       interval: "monthly"
       day: "sunday"
       time: "18:00"
+    groups:
+      docker-base-image:
+        patterns:
+          - "*"
     commit-message:
       prefix: "chore: "
     reviewers:
@@ -28,6 +36,10 @@ updates:
       interval: "monthly"
       day: "sunday"
       time: "18:00"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
     commit-message:
       prefix: "build: "
     reviewers:
