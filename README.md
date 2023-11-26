@@ -18,7 +18,7 @@ Inside the ABRP (web)app, navigate to your car settings and use the "generic" ca
 
 #### 1.3 Adding the service to docker-compose.yml
 In your TeslaMate docker-compose.yml, add the teslamate-abrp service by adding the following lines in the "services:" section:
-```
+```yaml
 ABRP:
   container_name: TeslaMate_ABRP
   image: fetzu/teslamate-abrp:latest #NOTE: you can replace ":latest" with ":beta" to use the bleeding edge version, without any guarantees.
@@ -33,12 +33,20 @@ ABRP:
 ```
   
 Make sure to adapt the following environment variables:
+
 - The first value MQTT_SERVER corresponds to the name of your MQTT service name ("mosquitto" in the doc).  
 - The second values (USER_TOKEN) correspond to the value provided by ABRP.
 - The third value corresponds to your car number (1 if you only have a single car).
 - The last value corresponds to your car model. When this value is not set, the script will try to determine your car model automatically (this should work for Models S, X, 3 and Y with standard configs). __The detection is very bare-bones and will not take into account factors such as wheel type, heat pump, LFP battery. It is recommended you take a moment to find your car model on https://api.iternio.com/1/tlm/get_carmodels_list and use the corresponding key as a value for CAR_MODEL (e.g. "tesla:m3:20:bt37:heatpump" for a 2021 Model 3 LR).__
-- Additionally, MQTT_PASSWORD and/or MQTT_USERNAME can be set to use authentication on the MQTT server. Setting the environement variable TM2ABRP_DEBUG (to any value) sets logging level to DEBUG and give you a more verbose logging.
-  
+- Additionally;
+  - MQTT_PASSWORD: and/or MQTT_USERNAME: can be set to use authentication on the MQTT server.
+  - TM2ABRP_DEBUG: set (to any value) sets logging level to DEBUG and give you a more verbose logging.
+  - MQTT_TLS: will connect to the MQTT server with encryption, the server must have certificates configured.
+  - MQTT_PORT: is the port the MQTT server is listening on, defaults to 1883 and if you are using TLS this probably should be set to 8883
+  - STATUS_TOPIC: can be set to a MQTT topic where status messages will be sent, write permissions will be needed for this specific topic.
+  - SKIP_LOCATION: If you don't want to share your location with ABPR(Iternio), give this environment variable a value and the lat and lon values will always be 0
+
+
 Then from the command line, navigate to the folder where your docker-compose.yml is located and run:
 ```
 docker-compose pull ABRP
@@ -46,6 +54,53 @@ docker-compose up -d ABRP
 ```
   
 If all goes well, your car should be shown as online in ABRP after a minute. Logging should show "YYYY-MM-DD HH:MM:SS: [INFO] Connected with result code 0. Connection with MQTT server established.".
+
+#### 1.4 Security
+
+If you want to follow dockers recommendations regarding secrets, you should not provide them as `ENVIRONMENT VARIABLE` or command line parameters.  
+Instead use the build in [secrets function](https://docs.docker.com/compose/use-secrets/). This will expose the secrets in the container to the file system at `/run/secrets/`
+
+This is an example of a part of a docker-compose.yml file using:
+
+- Secrets instead of environment variables
+- TLS enabled on the MQTT Server
+- A status topic provided
+- Don't send latitude and longitude to ABRP
+
+```yaml
+version: "3"
+services:
+  abrp:
+    container_name: TeslaMate_ABRP
+    image: fetzu/teslamate-abrp:latest #NOTE: you can replace ":latest" with ":beta" to use the bleeding edge version, without any guarantees.
+    restart: always
+    environment:
+      CAR_NUMBER: 1
+      MQTT_SERVER: your.server.tld # Replace with your actually server name
+      MQTT_PORT: 8883 # This is a TLS enabled server, and usually that is enabled on a different port than the default 1883
+      MQTT_USERNAME: myMQTTusername # Replace with your actually mqtt username
+      MQTT_TLS: True # Connect to the MQTT server encrypted
+      STATUS_TOPIC: teslamate-abrp # This will send status messages and a copy of the ABRP data to the topic "teslamate-abrp/xxx"
+      TM2ABRP_DEBUG: True # This will enable DEBUG output
+      SKIP_LOCATION: True # Don't send location info to ABRP
+      TZ: "Europe/Stockholm"
+    secrets:
+      - USER_TOKEN # Instead of having your token in clear text, it's found in the file below
+      - MQTT_PASSWORD # Instead of having your password in clear text, it's found in the file below
+
+secrets:
+# These files contains the password/token on the first row, and nothing else. 
+# It can be placed "anywhere" and protected by appropriate file permissions.
+  USER_TOKEN:
+    file: abrp-token.txt 
+  MQTT_PASSWORD:
+    file: abrp-mqtt-pass.txt
+```
+
+To run it:
+```bash
+docker compose up -d
+```
 
 ### 2. Use as python script
 The script can also be run directly on a machine with Python 3.x. Please note that the machine needs to have access to your MQTT server on port 1883.
