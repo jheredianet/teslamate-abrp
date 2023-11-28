@@ -47,8 +47,6 @@ MQTTUSERNAME = None
 MQTTPASSWORD = None
 
 ## [ FUNCTIONS ]
-
-# Get secret from docker secret file
 def getDockerSecret(secretName):
     file = "/run/secrets/"+secretName
     if os.path.isfile(file):
@@ -130,8 +128,7 @@ elif 'STATUS_TOPIC' in os.environ: BASETOPIC = os.environ['STATUS_TOPIC']
 else: BASETOPIC = None
 
 # Skip LAT and LON if specified
-if arguments['-x'] is True or 'SKIP_LOCATION' in os.environ:
-    SKIPLOCATION = True
+if arguments['-x'] is True or 'SKIP_LOCATION' in os.environ: SKIPLOCATION = True
 else: SKIPLOCATION = False
 
 ## [ VARS ]
@@ -200,9 +197,6 @@ def on_message(client, userdata, message):
         #extracts message data from the received message
         payload = str(message.payload.decode("utf-8"))
 
-        #updates the received data
-        topic_postfix = message.topic.split('/')[-1]
-        
         match (message.topic.split('/')[-1]):
             case "model":
                 data["model"] = payload
