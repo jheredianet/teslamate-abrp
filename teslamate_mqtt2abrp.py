@@ -32,7 +32,6 @@ import datetime
 import calendar
 import os
 import logging
-import json
 import requests
 import paho.mqtt.client as mqtt
 from time import sleep
@@ -210,10 +209,10 @@ def on_message(client, userdata, message):
             case "trim_badging":
                 data["trim_badging"] = payload
             case "latitude":
-                 if not SKIPLOCATION:
+                if not SKIPLOCATION:
                     data["lat"] = float(payload)
             case "longitude":
-                 if not SKIPLOCATION:
+                if not SKIPLOCATION:
                     data["lon"] = float(payload)
             case "elevation":
                 data["elevation"] = int(payload)
@@ -292,23 +291,6 @@ def on_message(client, userdata, message):
 
     except:
         logging.critical("Unexpected exception while processing message: {} {} {}".format(sys.exc_info()[0], message.topic, message.payload))
-
-# Get secret from docker secret file
-def getDockerSecret(secretName):
-    file = "/run/secrets/"+secretName
-    logging.debug("Trying to read secret from: {}".format(file))
-    if os.path.isfile(file):
-        fo = open(file,"r")
-        sec = fo.read().splitlines()[0]
-        if len(sec) > 0:
-            logging.debug("Secret read from file: ******")
-            return sec
-        else:
-            logging.error("Secret file is empty.")
-            return None
-    else:
-        logging.error("Secret file does not exist.")
-        return None
     
 # Starts the MQTT loop processing messages
 client.on_message = on_message
