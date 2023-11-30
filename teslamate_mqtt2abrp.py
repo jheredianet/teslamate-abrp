@@ -102,6 +102,8 @@ else:
 
 if arguments['-s'] is True or 'MQTT_TLS' in os.environ:
     MQTTTLS = True
+else:
+    MQTTTLS = False
 
 if arguments['USER_TOKEN'] is not None: USERTOKEN = arguments['USER_TOKEN']
 elif 'USER_TOKEN' in os.environ: USERTOKEN = os.environ['USER_TOKEN']
@@ -170,7 +172,7 @@ if MQTTUSERNAME is not None:
     else:
         logging.debug("Using MQTT username: {}".format(MQTTUSERNAME))
         client.username_pw_set(MQTTUSERNAME)
-if MQTTTLS:
+if MQTTTLS is True:
     logging.debug("Using TLS with MQTT")
     client.tls_set()
 if BASETOPIC is not None:
