@@ -68,15 +68,16 @@ This is an example of a part of a docker-compose.yml file using:
 - Debug level logging activated
 
 ```yaml
-version: "3"
+version: '3'
 services:
-  abrp:
+  # [...Other services such as TeslaMate, postgres, Grafana and the MQTT broker go here...]
+  MQTT2ABRP:
     container_name: TeslaMate_ABRP
     image: fetzu/teslamate-abrp:latest #NOTE: you can replace ":latest" with ":beta" to use the bleeding edge version, without any guarantees.
     restart: always
     environment:
       CAR_NUMBER: 1
-      MQTT_SERVER: your.server.tld # Replace with your actually server name
+      MQTT_SERVER: your.server.tld # Replace with your server's service name or IP address
       MQTT_PORT: 8883 # This is a TLS enabled server, and usually that is enabled on a different port than the default 1883
       MQTT_USERNAME: myMQTTusername # Replace with your actually mqtt username
       MQTT_TLS: True # Connect to the MQTT server encrypted
@@ -139,7 +140,7 @@ Options:
 Note:
     All arguments can also be passed as corresponding OS environment variables.
 ```
-**Note: All arguments can also be passed as corresponding OS environment variables.** Arguments passed through the CLI will always supersede OS environment variables.
+**Note: All arguments can also be passed as corresponding OS environment variables.** Arguments passed through the CLI will always supersede OS environment variables and docker secrets (in that order).
 
 
 ## Credits
