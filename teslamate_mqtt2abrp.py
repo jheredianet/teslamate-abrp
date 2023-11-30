@@ -135,7 +135,7 @@ state = "" #car state
 prev_state = "" #car state previous loop for tracking
 charger_phases = 1
 prefix = "_tm2abrp"
-state_topic = BASETOPIC + "/" + prefix + "_status" # MQTT topic to publish status messages to
+if BASETOPIC is not None: state_topic = BASETOPIC + "/" + prefix + "_status" # MQTT topic to publish status messages to
 data = { #dictionary of values sent to ABRP API
     "utc": 0,
     "soc": 0,
