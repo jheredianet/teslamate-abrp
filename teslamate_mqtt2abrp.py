@@ -9,14 +9,14 @@ Arguments:
     CAR_NUMBER            Car number from TeslaMate (usually 1).
     MQTT_SERVER           MQTT server address (e.g. "192.168.1.1").
     MQTT_PORT             MQTT port (e.g. 1883 or 8883 for TLS).
-    MQTT_USERNAME         MQTT username (e.g. "teslamate") - use with -l or -a.
-    MQTT_PASSWORD         MQTT password (e.g. "etamalset") - use with -a.
+    MQTT_USERNAME         MQTT username, use with -l or -p.
+    MQTT_PASSWORD         MQTT password, use with -p.
 
 Options:
     -h                    Show this screen.
     -d                    Debug mode (set logging level to DEBUG)
     -l                    Use username to connect to MQTT server.
-    -a                    Use authentication (user and password) to connect to MQTT server.
+    -p                    Use authentication (user and password) to connect to MQTT server.
     -s                    Use TLS to connect to MQTT server, environment variable: MQTT_TLS
     -x                    Don't send LAT and LON to ABRP, environment variable: SKIP_LOCATION
     --model CAR_MODEL     Car model according to https://api.iternio.com/1/tlm/get_CARMODELs_list
@@ -85,7 +85,7 @@ if (arguments['-l'] is True or arguments['-a'] is True) and arguments['MQTT_USER
     MQTTUSERNAME = arguments['MQTT_USERNAME']
 elif 'MQTT_USERNAME' in os.environ: MQTTUSERNAME = os.environ['MQTT_USERNAME']
 
-if arguments['-a'] is True and arguments['MQTT_PASSWORD'] is not None:
+if arguments['-p'] is True and arguments['MQTT_PASSWORD'] is not None:
     MQTTPASSWORD = arguments['MQTT_PASSWORD']
 elif 'MQTT_PASSWORD' in os.environ: MQTTPASSWORD = os.environ['MQTT_PASSWORD']
 elif getDockerSecret("MQTT_PASSWORD") is not None: MQTTPASSWORD = getDockerSecret("MQTT_PASSWORD")
