@@ -81,7 +81,7 @@ logging.basicConfig(format='%(asctime)s: [%(levelname)s] %(message)s',
                     level=log_level)
 logging.debug("Logging level set to DEBUG.")
 
-if (arguments['-l'] is True or arguments['-a'] is True) and arguments['MQTT_USERNAME'] is not None: 
+if (arguments['-l'] is True or arguments['-p'] is True) and arguments['MQTT_USERNAME'] is not None: 
     MQTTUSERNAME = arguments['MQTT_USERNAME']
 elif 'MQTT_USERNAME' in os.environ: MQTTUSERNAME = os.environ['MQTT_USERNAME']
 
