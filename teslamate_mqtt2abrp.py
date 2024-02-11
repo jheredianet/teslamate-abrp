@@ -164,7 +164,7 @@ data = { #dictionary of values sent to ABRP API
 
 ## [ MQTT ]
 # Initialize MQTT client and connect
-client = mqtt.Client(f"teslamateToABRP-{CARNUMBER}")
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, f"teslamateToABRP-{CARNUMBER}")
 if MQTTUSERNAME is not None:
     if MQTTPASSWORD is not None:
         logging.debug("Using MQTT username: {} and password '******'".format(MQTTUSERNAME))
