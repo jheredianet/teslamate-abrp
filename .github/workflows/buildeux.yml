@@ -11,6 +11,8 @@ on:
       - 'main'
     tags:
       - 'v*'
+  schedule:
+    - cron: "37 1 */1,*/14 * *"
 
 jobs:
   push_to_registries:
