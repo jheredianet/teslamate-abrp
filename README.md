@@ -5,7 +5,7 @@
 [![](https://img.shields.io/docker/pulls/fetzu/teslamate-abrp?color=%23099cec)](https://hub.docker.com/r/fetzu/teslamate-abrp)
 [![GitHub license](https://img.shields.io/github/license/fetzu/teslamate-abrp)](https://github.com/fetzu/teslamate-abrp/blob/main/LICENSE)
   
-A slightly convoluted way of getting your vehicle data from [TeslaMate](https://github.com/adriankumpf/teslamate) to [ABRP](https://abetterrouteplanner.com/).
+A slightly convoluted way of getting your vehicle data from [TeslaMate](https://github.com/teslamate-org/teslamate) to [ABRP](https://abetterrouteplanner.com/).
 
 
 ## Setup and Usage
