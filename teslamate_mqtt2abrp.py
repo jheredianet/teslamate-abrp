@@ -183,7 +183,7 @@ client.connect(MQTTSERVER, MQTTPORT)
 
 def on_connect(client, userdata, flags, reason_code, properties):  # The callback for when the client connects to the broker
     # MQTT Error handling
-    logging.info("MQTT Connection returned result: {} Code {}.".format(mqtt.connack_string(reason_code),reason_code))
+    logging.info("MQTT Connection returned result: {} (reason code {}).".format(mqtt.connack_string(reason_code),reason_code))
     if reason_code != 0:
         sys.exit("Could not connect")
     client.subscribe(f"teslamate/cars/{CARNUMBER}/#")
