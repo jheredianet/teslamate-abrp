@@ -14,6 +14,8 @@ updates:
       prefix: "chore: "
     reviewers:
       - "fetzu"
+    ignore:
+      - dependency-name: "/.github/workflows/build.yml"
 
   - package-ecosystem: "docker"
     directory: "/"
@@ -29,6 +31,8 @@ updates:
       prefix: "chore: "
     reviewers:
       - "fetzu"
+    ignore:
+      - dependency-name: "/.github/workflows/build.yml"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -44,3 +48,5 @@ updates:
       prefix: "build: "
     reviewers:
       - "fetzu"
+    ignore:
+      - dependency-name: "/.github/workflows/build.yml"
