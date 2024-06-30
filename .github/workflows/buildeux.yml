@@ -1,4 +1,5 @@
 # Build for amd64 and arm64 and publish to DockerHub and GitHub Packages
+# The :beta image is automatically re-built and pushed fortnightly to include changes to upstream images
 
 name: Build and publish Docker image
 
