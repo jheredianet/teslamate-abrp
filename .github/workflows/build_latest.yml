@@ -6,7 +6,7 @@ name: :latest
 on:
   release:
     types: 
-      - 'published'
+      - 'released'
 
 jobs:
   push_to_registries:
