@@ -23,7 +23,7 @@ In your TeslaMate docker-compose.yml, add the teslamate-abrp service by adding t
 ```yaml
 ABRP:
   container_name: TeslaMate_ABRP
-  image: fetzu/teslamate-abrp:latest #NOTE: you can replace ":latest" with ":beta" to use the bleeding edge version, without any guarantees.
+  image: fetzu/teslamate-abrp:latest #NOTE: you can replace ":latest" with either ":beta" (pre-release version) or ":alpha" for the bleeding edge version (note: bleeding edge might be very unstable or even not work at all)
   restart: always
   # privileged: true
   # NOTE: un-comment the previous line to run the container in privilege mode (necessary on RaspberryPi)
