@@ -48,6 +48,8 @@ jobs:
           tags: |
             type=semver,pattern={{version}}
             type=raw,value=beta
+          flavor: |
+            latest=false
       
       - name: Build and push Docker images for pre-releases (:beta)
         uses: docker/build-push-action@v6

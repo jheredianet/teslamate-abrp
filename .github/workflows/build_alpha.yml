@@ -51,6 +51,8 @@ jobs:
           tags: |
             type=semver,pattern={{version}}
             type=raw,value=beta
+          flavor: |
+            latest=false
           
       - name: Build and push Docker image with 'alpha' tag
         if: github.ref == 'refs/heads/main'
