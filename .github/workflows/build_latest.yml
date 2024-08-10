@@ -8,6 +8,7 @@ on:
     types: 
       - 'released'
       - 'edited'
+  workflow_dispatch:
 
 jobs:
   push_to_registries:
@@ -50,7 +51,7 @@ jobs:
             type=semver,pattern={{version}}
       
       - name: Build and push Docker images for releases
-        if: github.event_name == 'release'
+        if: github.event.action == 'released' || github.event.action == 'edited'
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
