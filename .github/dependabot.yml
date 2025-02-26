@@ -1,0 +1,52 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "18:00"
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "chore: "
+    reviewers:
+      - "fetzu"
+    ignore:
+      - dependency-name: "/.github/workflows/build.yml"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "sunday"
+      time: "18:00"
+    groups:
+      docker-base-image:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "chore: "
+    reviewers:
+      - "fetzu"
+    ignore:
+      - dependency-name: "/.github/workflows/build.yml"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "sunday"
+      time: "18:00"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: "build: "
+    reviewers:
+      - "fetzu"
+    ignore:
+      - dependency-name: "/.github/workflows/build.yml"
