@@ -135,6 +135,7 @@ else: SKIPLOCATION = False
 ## [ VARS ]
 state = "" #car state
 prev_state = "" #car state previous loop for tracking
+geofence = "" #geofence location
 charger_phases = 1
 prefix = "_tm2abrp"
 if BASETOPIC is not None: state_topic = BASETOPIC + "/" + prefix + "_status" # MQTT topic to publish status messages to
@@ -193,6 +194,7 @@ def on_connect(client, userdata, flags, reason_code, properties):  # The callbac
 def on_message(client, userdata, message):
     global data
     global state
+    global geofence
     global charger_phases
     try:
         #extracts message data from the received message
@@ -251,6 +253,11 @@ def on_message(client, userdata, message):
                     data["is_parked"] = False
             case "state":
                 state = payload
+                # Corregir offline a asleep cuando está en Home
+                if payload == "offline" and "Home" in geofence:
+                    client.publish(f"teslamate/cars/{CARNUMBER}/state", payload="asleep", qos=1, retain=True)
+                    state = "asleep"
+                    logging.info("Corrected state from offline to asleep (geofence: Home)")
                 if payload == "driving":
                     data["is_parked"] = False
                     data["is_charging"] = False
@@ -273,6 +280,8 @@ def on_message(client, userdata, message):
                 data["kwh_charged"] = float(payload)
             case "charger_phases":
                 charger_phases = 3 if payload and int(payload) > 1 else 1 #Fixes processing error when transitioning out of charging
+            case "geofence":
+                geofence = payload
             case _:
                 # Unhandled
                 logging.debug("Unneeded topic: {} {}".format(message.topic, payload))
